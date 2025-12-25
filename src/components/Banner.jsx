@@ -6,8 +6,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
 
   return (
     <div className="relative h-96 w-full overflow-hidden">
-      {/* Background Image */}
-      <div 
+       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: backgroundImage || `url('/images/ahmed.jpg')`,
@@ -22,8 +21,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
         </h1>
 
         <div className="flex items-center gap-2 text-lg">
-          {/* BACK BUTTON */}
-          <span
+           <span
             onClick={() => navigate(-1)}
             className="hover:text-yellow-400 transition-colors cursor-pointer"
           >

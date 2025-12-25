@@ -41,13 +41,7 @@ function OtpVerification() {
         />
 
         {error && <p className="text-red-500 mt-2">{error}</p>}
-
-        {/* <button
-          onClick={handleVerify}
-          className="w-full mt-6 py-3 bg-[#2f6fb2] text-white rounded-full font-bold hover:bg-blue-700 transition"
-        >
-          Verify OTP
-        </button> */}
+ 
 <button  className="w-full mt-6 py-3 bg-[#2f6fb2] text-white rounded-full font-bold hover:bg-blue-700 transition" onClick={() => window.open("https://buy.stripe.com/test_bJe3cuayXgRk3jFd96eIw01")}>
 Verify OTP</button>
         <button className="text-sm text-[#2f6fb2] mt-4">
