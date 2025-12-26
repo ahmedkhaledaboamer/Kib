@@ -171,8 +171,7 @@ function ChatWidget({ isOpen, onClose, service }) {
       const chatwootBubble = document.querySelector('.woot-widget-bubble');
       
       if (isOpen) {
-        // أولاً: تأكد من إظهار الـ widget
-        if (chatwootWidget) {
+         if (chatwootWidget) {
           chatwootWidget.style.display = 'block';
           
           const styles = [
@@ -192,31 +191,26 @@ function ChatWidget({ isOpen, onClose, service }) {
           chatwootWidget.style.cssText = styles.join('; ');
         }
         
-        // ثانياً: افتح الشات
-        window.$chatwoot.toggle('open');
+         window.$chatwoot.toggle('open');
         
-        // ثالثاً: أخفي الـ bubble
-        if (chatwootBubble) {
+         if (chatwootBubble) {
           chatwootBubble.style.display = 'none';
         }
         
       } else {
-        // عند الإغلاق: فقط أخفي الـ widget ولا تغلق داخلياً
-        if (chatwootWidget) {
+         if (chatwootWidget) {
           chatwootWidget.style.display = 'none';
         }
         if (chatwootBubble) {
           chatwootBubble.style.display = 'none';
         }
         
-        // لا تستخدم toggle('close') لأنه يمنع إعادة الفتح
-        // window.$chatwoot.toggle('close');
+        
       }
     }
   }, [isOpen]);
 
-  // إضافة event listener للإغلاق عند النقر خارج الشات
-  useEffect(() => {
+   useEffect(() => {
     const handleClickOutside = (e) => {
       const chatwootWidget = document.querySelector('.woot-widget-holder');
       if (chatwootWidget && 
