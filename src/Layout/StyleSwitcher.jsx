@@ -3,117 +3,156 @@ import { Settings, X } from 'lucide-react';
 
 const StyleSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeColor, setActiveColor] = useState('orange');
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [theme, setTheme] = useState('orange');
+  const [darkMode, setDarkMode] = useState(false);
   const [glassEffect, setGlassEffect] = useState(false);
 
-  // Theme colors configuration
-  const colors = [
-    { id: 'color-1', name: 'Orange', value: 'hsl(36, 80%, 50%)', bg: 'bg-orange-500' },
-    { id: 'color-2', name: 'Blue', value: 'hsl(217, 91%, 60%)', bg: 'bg-blue-500' },
-    { id: 'color-3', name: 'Green', value: 'hsl(142, 71%, 45%)', bg: 'bg-green-500' },
-    { id: 'color-4', name: 'Purple', value: 'hsl(271, 76%, 53%)', bg: 'bg-purple-500' },
-    { id: 'color-5', name: 'Pink', value: 'hsl(340, 82%, 52%)', bg: 'bg-pink-500' }
+  const themes = [
+    { name: 'green', color: 'bg-lime-500', primary: '#84cc16' },
+    { name: 'orange', color: 'bg-orange-500', primary: '#f97316' },
+    { name: 'teal', color: 'bg-teal-400', primary: '#2dd4bf' },
+    { name: 'pink', color: 'bg-pink-300', primary: '#f9a8d4' },
+    { name: 'cyan', color: 'bg-cyan-400', primary: '#22d3ee' }
   ];
 
-  // Load settings from localStorage on mount
   useEffect(() => {
-    const savedColor = localStorage.getItem('color') || 'color-1';
-    const savedDarkMode = localStorage.getItem('dark-mode') === 'true';
-    const savedGlassEffect = localStorage.getItem('glass-effect') === 'true';
+    document.documentElement.style.setProperty('--primary-color', 
+      themes.find(t => t.name === theme)?.primary || '#f97316'
+    );
+  }, [theme]);
 
-    setActiveColor(savedColor);
-    setIsDarkMode(savedDarkMode);
-    setGlassEffect(savedGlassEffect);
-  }, []);
+  const containerClass = `min-h-screen transition-colors duration-300 ${
+    darkMode ? 'bg-gray-900' : 'bg-gray-50'
+  }`;
 
-  // Update CSS variables when color changes
-  useEffect(() => {
-    const colorObj = colors.find(c => c.id === activeColor);
-    if (colorObj) {
-      document.documentElement.style.setProperty('--primary-color', colorObj.value);
-    }
-  }, [activeColor]);
+  const cardClass = `rounded-2xl p-8 transition-all duration-300 ${
+    glassEffect 
+      ? darkMode 
+        ? 'bg-white/10 backdrop-blur-lg border border-white/20' 
+        : 'bg-white/40 backdrop-blur-lg border border-white/60'
+      : darkMode
+        ? 'bg-gray-800'
+        : 'bg-white'
+  }`;
 
-  // Handle color change
-  const handleColorChange = (colorId) => {
-    setActiveColor(colorId);
-    localStorage.setItem('color', colorId);
-  };
-
-  // Handle dark mode toggle
-  const handleDarkModeToggle = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem('dark-mode', newDarkMode);
-  };
-
-  // Handle glass effect toggle
-  const handleGlassEffectToggle = () => {
-    const newGlassEffect = !glassEffect;
-    setGlassEffect(newGlassEffect);
-    localStorage.setItem('glass-effect', newGlassEffect);
-  };
+  const textClass = darkMode ? 'text-white' : 'text-gray-800';
+  const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-600';
 
   return (
-    <>
-      {/* Main Content Area */}
-      <div className={`min-h-screen transition-colors duration-300 ${
-        isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
-      }`}>
-        
-        {/* Demo Card */}
-        <div className="flex items-center justify-center min-h-screen p-8">
-          <div className={`
-            max-w-2xl w-full p-8 rounded-2xl
-            ${glassEffect 
-              ? 'backdrop-blur-lg bg-white/10 border border-white/20' 
-              : isDarkMode 
-                ? 'bg-gray-800' 
-                : 'bg-white'
-            }
-            ${!glassEffect && 'shadow-2xl'}
-            transition-all duration-300
-          `}>
-            <h1 className={`text-4xl font-bold mb-4 ${
-              isDarkMode ? 'text-white' : 'text-gray-900'
-            }`}>
-              Ancient Egyptian Civilization
-            </h1>
-            <p className={`text-lg mb-6 ${
-              isDarkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-              Experience the beauty of modern design with customizable themes, dark mode, and stunning glass effects.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className={`
-                    p-6 rounded-xl
-                    ${glassEffect 
-                      ? 'backdrop-blur-md bg-white/5 border border-white/10' 
-                      : isDarkMode 
-                        ? 'bg-gray-700' 
-                        : 'bg-gray-50'
-                    }
-                    transition-all duration-300
-                  `}
+    <div className={containerClass}>
+      {/* Settings Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-6 left-6 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+        style={{ backgroundColor: themes.find(t => t.name === theme)?.primary }}
+      >
+        {isOpen ? <X className="w-6 h-6 text-white" /> : <Settings className="w-6 h-6 text-white" />}
+      </button>
+
+      {/* Style Switcher Panel */}
+      <div
+        className={`fixed top-0 left-0 h-full w-80 shadow-2xl transition-transform duration-300 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } ${cardClass}`}
+      >
+        <div className="p-8">
+          <h2 className={`text-2xl font-bold mb-8 ${textClass}`}>Style Switcher</h2>
+
+          {/* Theme Colors */}
+          <div className="mb-8">
+            <h3 className={`text-sm font-medium mb-4 ${textMutedClass}`}>theme colors</h3>
+            <div className="flex gap-3">
+              {themes.map((t) => (
+                <button
+                  key={t.name}
+                  onClick={() => setTheme(t.name)}
+                  className={`w-10 h-10 rounded-full ${t.color} relative transition-transform hover:scale-110`}
                 >
-                  <div 
-                    className="w-12 h-12 rounded-full mb-4"
-                    style={{ backgroundColor: 'var(--primary-color, hsl(36, 80%, 50%))' }}
-                  />
-                  <h3 className={`font-semibold mb-2 ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    Feature {item}
-                  </h3>
-                  <p className={`text-sm ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
-                  }`}>
-                    This is a demo card showcasing the theme effects
+                  {theme === t.name && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Dark Mode Toggle */}
+          <div className="mb-6 flex items-center justify-between">
+            <span className={`${textMutedClass}`}>dark mode</span>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className={`w-12 h-6 rounded-full transition-colors ${
+                darkMode ? 'bg-green-500' : 'bg-gray-300'
+              }`}
+            >
+              <div
+                className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
+                  darkMode ? 'translate-x-6' : 'translate-x-1'
+                } mt-0.5`}
+              />
+            </button>
+          </div>
+
+          {/* Glass Effect Toggle */}
+          <div className="flex items-center justify-between">
+            <span className={`${textMutedClass}`}>glass effect</span>
+            <button
+              onClick={() => setGlassEffect(!glassEffect)}
+              className={`w-12 h-6 rounded-full transition-colors ${
+                glassEffect ? 'bg-green-500' : 'bg-gray-300'
+              }`}
+            >
+              <div
+                className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
+                  glassEffect ? 'translate-x-6' : 'translate-x-1'
+                } mt-0.5`}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Demo Content */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto">
+          <div className={cardClass}>
+            <h1 className={`text-4xl font-bold mb-4 ${textClass}`}>
+              مرحباً بك في موقعنا
+            </h1>
+            <p className={`text-lg mb-6 ${textMutedClass}`}>
+              جرب تغيير الألوان والثيم من القائمة على اليسار
+            </p>
+            <button
+              className="px-6 py-3 rounded-lg text-white font-medium transition-transform hover:scale-105"
+              style={{ backgroundColor: themes.find(t => t.name === theme)?.primary }}
+            >
+              ابدأ الآن
+            </button>
+          </div>
+
+          <div className={`${cardClass} mt-6`}>
+            <h2 className={`text-2xl font-bold mb-4 ${textClass}`}>المميزات</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className={`p-4 rounded-lg ${
+                    darkMode ? 'bg-gray-700/50' : 'bg-gray-100/50'
+                  }`}
+                >
+                  <div
+                    className="w-12 h-12 rounded-full mb-3 flex items-center justify-center text-white font-bold"
+                    style={{ backgroundColor: themes.find(t => t.name === theme)?.primary }}
+                  >
+                    {i}
+                  </div>
+                  <h3 className={`font-semibold mb-2 ${textClass}`}>ميزة {i}</h3>
+                  <p className={`text-sm ${textMutedClass}`}>
+                    وصف تفصيلي للميزة رقم {i}
                   </p>
                 </div>
               ))}
@@ -121,148 +160,7 @@ const StyleSwitcher = () => {
           </div>
         </div>
       </div>
-
-      {/* Style Switcher Panel */}
-      <div className={`
-        fixed top-0 transition-all duration-300 z-50
-        ${isOpen ? 'right-0' : '-right-64'}
-      `}>
-        <div className={`
-          w-64 h-screen p-6
-          ${glassEffect 
-            ? 'backdrop-blur-xl bg-white/10 border-l border-white/20' 
-            : isDarkMode 
-              ? 'bg-gray-800' 
-              : 'bg-white'
-          }
-          shadow-2xl
-        `}>
-          {/* Header */}
-          <h3 className={`text-xl font-bold mb-6 ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}>
-            Style Switcher
-          </h3>
-
-          {/* Theme Colors */}
-          <div className="mb-6">
-            <p className={`text-sm mb-3 ${
-              isDarkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-              Theme Colors
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              {colors.map((color) => (
-                <button
-                  key={color.id}
-                  onClick={() => handleColorChange(color.id)}
-                  className={`
-                    w-10 h-10 rounded-full transition-all duration-300
-                    ${color.bg}
-                    ${activeColor === color.id 
-                      ? 'ring-4 ring-offset-2 ring-gray-400 scale-110' 
-                      : 'hover:scale-105'
-                    }
-                  `}
-                  title={color.name}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Dark Mode Toggle */}
-          <div className="mb-6">
-            <label className="flex items-center justify-between cursor-pointer">
-              <span className={`text-sm ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                Dark Mode
-              </span>
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={isDarkMode}
-                  onChange={handleDarkModeToggle}
-                  className="sr-only"
-                />
-                <div
-                  onClick={handleDarkModeToggle}
-                  className={`
-                    w-14 h-8 rounded-full transition-colors duration-300
-                    ${isDarkMode ? 'bg-blue-500' : 'bg-gray-300'}
-                  `}
-                >
-                  <div className={`
-                    w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300
-                    absolute top-1
-                    ${isDarkMode ? 'translate-x-7' : 'translate-x-1'}
-                  `} />
-                </div>
-              </div>
-            </label>
-          </div>
-
-          {/* Glass Effect Toggle */}
-          <div className="mb-6">
-            <label className="flex items-center justify-between cursor-pointer">
-              <span className={`text-sm ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                Glass Effect
-              </span>
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={glassEffect}
-                  onChange={handleGlassEffectToggle}
-                  className="sr-only"
-                />
-                <div
-                  onClick={handleGlassEffectToggle}
-                  className={`
-                    w-14 h-8 rounded-full transition-colors duration-300
-                    ${glassEffect ? 'bg-purple-500' : 'bg-gray-300'}
-                  `}
-                >
-                  <div className={`
-                    w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300
-                    absolute top-1
-                    ${glassEffect ? 'translate-x-7' : 'translate-x-1'}
-                  `} />
-                </div>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`
-          fixed top-6 right-6 z-50
-          w-12 h-12 rounded-full
-          flex items-center justify-center
-          transition-all duration-300
-          ${glassEffect 
-            ? 'backdrop-blur-xl bg-white/20 border border-white/30' 
-            : isDarkMode 
-              ? 'bg-gray-800' 
-              : 'bg-white'
-          }
-          shadow-lg hover:scale-110
-        `}
-        style={{ 
-          backgroundColor: glassEffect ? undefined : 'var(--primary-color, hsl(36, 80%, 50%))'
-        }}
-      >
-        {isOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <Settings className="w-6 h-6 text-white" />
-        )}
-      </button>
-    </>
+    </div>
   );
 };
 

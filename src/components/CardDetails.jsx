@@ -93,6 +93,15 @@
 // }
 
 // export default CardDetails;
+
+
+
+
+
+
+
+
+
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Undo2 } from 'lucide-react';
@@ -166,6 +175,7 @@ function CardDetails({ link, btn, service }) {
           )}
           {!isServicesPage && (
             <button
+            
               onClick={() => setIsOpen(true)}
               className="w-full px-4 py-2 border border-[#2f6fb2] text-[#2f6fb2] rounded-lg font-medium hover:bg-blue-50 transition"
             >
@@ -196,11 +206,11 @@ function CardDetails({ link, btn, service }) {
         service={service}
       />
 
-      <ChatWidget
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-        service={service}
-      />
+    <ChatWidget
+  isOpen={isChatOpen}
+  onClose={() => setIsChatOpen(false)}
+  service={{ ...service, chatToken: "TOKEN_FOR_THIS_CARD" }}
+/>
     </div>
   );
 }

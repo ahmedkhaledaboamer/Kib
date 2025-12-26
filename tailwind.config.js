@@ -1,10 +1,4 @@
-// const colors = require('tailwindcss/colors');
-// const defaultColors = require('tailwindcss/colors');
-// delete defaultColors.lightBlue;
-// delete defaultColors.warmGray;
-// delete defaultColors.trueGray;
-// delete defaultColors.coolGray;
-// delete defaultColors.blueGray;
+ 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx,html}", "./index.html"],
