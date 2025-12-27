@@ -271,6 +271,9 @@ function ChatWidget({ isOpen, onClose, service }) {
           cursor: "pointer"
         }}
       >
+
+
+        
         Close
       </button>
 
