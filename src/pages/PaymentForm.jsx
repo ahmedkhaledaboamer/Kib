@@ -409,8 +409,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
             </div>
           )}
           
-          {/* Progress Bar */}
-          <div className="mb-8">
+           <div className="mb-8">
             <div className="flex items-center justify-center gap-4">
               <div className={`flex items-center gap-2 ${currentStep === 1 ? 'text-teal-600' : 'text-gray-400'}`}>
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
