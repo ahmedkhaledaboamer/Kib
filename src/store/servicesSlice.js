@@ -29,7 +29,7 @@ export const createServiceBooking = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const res = await useInsertData("web-services-booking", data);
-      return res;
+      return res.data;  
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data || error.message

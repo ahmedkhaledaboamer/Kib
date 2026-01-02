@@ -69,13 +69,13 @@ function Categories() {
         </div>
       </div>
 
-      <Pagination 
+      {/* <Pagination 
         totalPages={Math.ceil(subservices.length / 8) || 1} 
         onPageChange={(newPage) => {
           setPage(newPage);
           console.log('Page changed to:', newPage);
         }} 
-      />
+      /> */}
     </div>
   );
 }

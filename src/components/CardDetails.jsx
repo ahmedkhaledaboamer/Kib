@@ -109,7 +109,7 @@ import ServiceModal from './ServiceModal';
 import CategoriesModal from './CategoriesModal';
 import ChatWidget from '../utils/chatwoot';
  
-function CardDetails({ link, btn, service }) {
+function CardDetails({ link, btn, service,id }) {
   const location = useLocation();
   const navigate = useNavigate();
   const isServicesPage = location.pathname === '/services';
@@ -150,7 +150,7 @@ function CardDetails({ link, btn, service }) {
             onClick={() => setIsCategoriesOpen(true)}
             className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl text-white text-lg font-bold cursor-pointer"
           >
-            Categories ({service.subservices.length})
+            Sub Services ({service.subservices.length})
           </button>
         )}
       </div>
