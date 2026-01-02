@@ -209,7 +209,7 @@ function CardDetails({ link, btn, service }) {
     <ChatWidget
   isOpen={isChatOpen}
   onClose={() => setIsChatOpen(false)}
-  service={{ ...service, chatToken: "TOKEN_FOR_THIS_CARD" }}
+  service={{ ...service, chatToken: "rpVangi8xrXgUAg7t8puLwtz" }}
 />
     </div>
   );

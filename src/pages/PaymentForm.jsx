@@ -37,9 +37,9 @@ function PaymentForm() {
     validationSchema,
    onSubmit: (values) => {
    localStorage.setItem('user', JSON.stringify(values));
+ window.open("https://buy.stripe.com/test_bJe3cuayXgRk3jFd96eIw01")
 
-
-   navigate('/otp');
+  //  navigate('/otp');
 },
   });
 

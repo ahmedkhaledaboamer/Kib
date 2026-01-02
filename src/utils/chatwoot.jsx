@@ -236,6 +236,7 @@
 
 // export default ChatWidget;
 
+import { X } from "lucide-react";
 import React from "react";
 
 function ChatWidget({ isOpen, onClose, service }) {
@@ -272,9 +273,9 @@ function ChatWidget({ isOpen, onClose, service }) {
         }}
       >
 
+<X/>
 
-        
-        Close
+         
       </button>
 
       <iframe

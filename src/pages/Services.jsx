@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getServices } from "../store/servicesSlice";
+import { createServiceBooking, getServices } from "../store/servicesSlice";
 import CardDetails from "../components/CardDetails";
  
 const Services = () => {
@@ -25,28 +25,55 @@ const Services = () => {
     }
     get();
   }, [dispatch]);
-
-  useEffect(() => {
+ useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const sessionId = params.get('session_id');
+    const sessionId = params.get("session_id");
 
-    if (sessionId) {
-      const storedData = localStorage.getItem('user');
+    if (!sessionId) {
+      const storedData = localStorage.getItem("user");
 
-      if (sessionId) {
+      if (storedData) {
         const user = JSON.parse(storedData);
 
-        const updatedData = {
+         const dataToSend = {
           ...user,
-          isPaid: true,  
+          isPaid: true,
+          session_id: sessionId,
         };
 
-        localStorage.setItem('user', JSON.stringify(updatedData));
-        toast.success('Payment submitted successfully!');
+         dispatch(createServiceBooking(dataToSend));
+
+         localStorage.setItem("user", JSON.stringify(dataToSend));
+
+        toast.success("Payment submitted successfully!");
       }
     }
-    navigate('/services');
-  }, [location.search]);
+
+    navigate("/services");
+  }, [location.search, dispatch, navigate]);
+
+  
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   const sessionId = params.get('session_id');
+
+  //   if (sessionId) {
+  //     const storedData = localStorage.getItem('user');
+
+  //     if (sessionId) {
+  //       const user = JSON.parse(storedData);
+
+  //       const updatedData = {
+  //         ...user,
+  //         isPaid: true,  
+  //       };
+
+  //       localStorage.setItem('user', JSON.stringify(updatedData));
+  //       toast.success('Payment submitted successfully!');
+  //     }
+  //   }
+  //   navigate('/services');
+  // }, [location.search]);
 
    const servicesList = Array.isArray(services) ? services : services ? [services] : [];
 

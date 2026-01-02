@@ -31,7 +31,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
           <span className="text-yellow-400">≫</span>
 
           <span className="text-yellow-400">
-            {breadcrumbs?.current || "Our Categories"}
+            {breadcrumbs?.current || "Sub Services "}
           </span>
         </div>
       </div>
