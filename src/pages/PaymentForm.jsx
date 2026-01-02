@@ -276,8 +276,8 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
   // Confirmation Page
   if (isConfirming) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+<div className="flex items-center justify-center min-h-screen bg-gray-50 py-12 px-4"> 
+         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-8 text-center">
               <CheckCircle className="w-16 h-16 mx-auto mb-4" />
@@ -398,7 +398,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
   }
 
   return (
-    <div className=" min-h-screen bg-gray-50 py-12 px-4">
+    <div className=" flex items-center justify-center min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {service && (
