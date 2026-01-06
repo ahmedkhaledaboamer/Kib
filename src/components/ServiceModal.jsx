@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
+import { useTranslation } from 'react-i18next';
+
 function ServiceModal({ isOpen, onClose, link }) {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -22,13 +25,11 @@ function ServiceModal({ isOpen, onClose, link }) {
         </button>
 
         <h2 className="text-3xl font-bold mb-4">
-          Public relation
+          {t('modal.publicRelation')}
         </h2>
 
         <p className="text-gray-600 mb-6">
-          Managing corporate reputation, investor communications, media relations,
-          corporate events, and strategic public relations initiatives that
-          build trust and a strong public image.
+          {t('modal.publicRelationDesc')}
         </p>
 
         <Link to={link}>
@@ -36,7 +37,7 @@ function ServiceModal({ isOpen, onClose, link }) {
             onClick={onClose}
             className="w-full px-4 py-3 bg-[#2f6fb2] text-white rounded-lg font-medium hover:bg-blue-700 transition"
           >
-            Book Now
+            {t('common.bookNow')}
           </button>
         </Link>
       </div>

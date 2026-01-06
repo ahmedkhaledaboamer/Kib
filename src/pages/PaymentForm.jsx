@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, MapPin, User, Mail, Phone, Home, Globe, FileText, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 function AppointmentForm() {
+  const { t } = useTranslation();
   const locationState = window.history.state?.usr || {};
   const serviceId = locationState.serviceId || null;
   const service = locationState.service || null;
@@ -51,21 +53,32 @@ function AppointmentForm() {
     'Asia/Dubai',
   ];
 
+  const durationOptions = {
+    30: `30 ${t('paymentForm.minutes')}`,
+    45: `45 ${t('paymentForm.minutes')}`,
+    60: `1 ${t('paymentForm.hour')}`,
+    90: `1.5 ${t('paymentForm.hours')}`,
+    120: `2 ${t('paymentForm.hours')}`
+  };
+
 
   const validateField = (name, value) => {
     switch (name) {
       case 'firstName':
+        if (!value) return t('paymentForm.firstNameRequired');
+        if (value.length < 2) return t('paymentForm.mustBe2Chars');
+        return '';
       case 'lastName':
-        if (!value) return `${name === 'firstName' ? 'First' : 'Last'} name is required`;
-        if (value.length < 2) return 'Must be at least 2 characters';
+        if (!value) return t('paymentForm.lastNameRequired');
+        if (value.length < 2) return t('paymentForm.mustBe2Chars');
         return '';
       case 'email':
-        if (!value) return 'Email is required';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Invalid email address';
+        if (!value) return t('paymentForm.emailRequired');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('paymentForm.invalidEmail');
         return '';
       case 'phone':
-        if (!value) return 'Phone number is required';
-        if (!/^\+?[0-9]{10,15}$/.test(value)) return 'Phone must be 10-15 digits';
+        if (!value) return t('paymentForm.phoneRequired');
+        if (!/^\+?[0-9]{10,15}$/.test(value)) return t('paymentForm.phoneInvalid');
         return '';
        
       default:
@@ -118,13 +131,28 @@ function AppointmentForm() {
     return `${hours.toString().padStart(2, '0')}:${minutes}`;
   };
 
+  const formatDuration = (minutes) => {
+    // Convert to number to handle string values from select
+    const mins = Number(minutes);
+    // Return exact match from durationOptions if available
+    if (durationOptions[mins]) {
+      return durationOptions[mins];
+    }
+    // Fallback for any other duration
+    const hours = Math.floor(mins / 60);
+    const remainingMins = mins % 60;
+    if (hours === 0) return `${mins} Minutes`;
+    if (remainingMins === 0) return `${hours} ${hours === 1 ? 'Hour' : 'Hours'}`;
+    return `${hours}.${remainingMins / 60 * 10} Hours`;
+  };
+
   const validateStep1 = () => {
     const newErrors = {};
     if (!selectedDate) {
-      newErrors.date = 'Please select a date';
+      newErrors.date = t('paymentForm.pleaseSelectDate');
     }
     if (!selectedTime) {
-      newErrors.time = 'Please select a time';
+      newErrors.time = t('paymentForm.pleaseSelectTime');
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -160,6 +188,7 @@ function AppointmentForm() {
       setCurrentStep(1);
     } else if (isConfirming) {
       setIsConfirming(false);
+      setCurrentStep(2);
     }
   };
 
@@ -216,7 +245,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
       window.open("https://buy.stripe.com/test_bJe3cuayXgRk3jFd96eIw01", "_blank");
     } catch (error) {
       console.error('Error saving to localStorage:', error);
-      alert('Error saving data. Please try again.');
+      alert(t('paymentForm.errorSaving'));
     }
   };
 
@@ -231,98 +260,109 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
     return { daysInMonth, startingDayOfWeek };
   };
 
-  const renderCalendar = () => {
-    const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentMonth);
-    const days = [];
+const renderCalendar = () => {
+  const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentMonth);
+  const days = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  for (let i = 0; i < startingDayOfWeek; i++) {
+    days.push(<div key={`empty-${i}`} className="h-10"></div>);
+  }
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    const isSelected = selectedDate && 
+      date.toDateString() === selectedDate.toDateString();
+    const isToday = date.toDateString() === today.toDateString();
+    const isPastDate = date < today;
     
-    for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(<div key={`empty-${i}`} className="h-10"></div>);
-    }
-    
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-      const isSelected = selectedDate && 
-        date.toDateString() === selectedDate.toDateString();
-      const isToday = date.toDateString() === new Date().toDateString();
-      
-      days.push(
-        <button
-          key={day}
-          type="button"
-          onClick={() => setSelectedDate(date)}
-          className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-medium transition ${
-            isSelected
-              ? 'bg-teal-600 text-white'
-              : isToday
-              ? 'bg-teal-100 text-teal-600'
-              : 'hover:bg-gray-100 text-gray-700'
-          }`}
-        >
-          {day}
-        </button>
-      );
-    }
-    
-    return days;
-  };
+    days.push(
+      <button
+        key={day}
+        type="button"
+        onClick={() => !isPastDate && setSelectedDate(date)}
+        disabled={isPastDate}
+        className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-medium transition ${
+          isSelected
+            ? 'bg-teal-600 text-white'
+            : isPastDate
+            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+            : isToday
+            ? 'bg-teal-100 text-teal-600 hover:bg-teal-200'
+            : 'hover:bg-gray-100 text-gray-700'
+        } ${!isPastDate ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+      >
+        {day}
+      </button>
+    );
+  }
+  
+  return days;
+};
 
   const changeMonth = (offset) => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + offset, 1));
   };
 
-  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'];
+  const monthNames = [
+    t('paymentForm.january'), t('paymentForm.february'), t('paymentForm.march'),
+    t('paymentForm.april'), t('paymentForm.may'), t('paymentForm.june'),
+    t('paymentForm.july'), t('paymentForm.august'), t('paymentForm.september'),
+    t('paymentForm.october'), t('paymentForm.november'), t('paymentForm.december')
+  ];
 
   // Confirmation Page
   if (isConfirming) {
     return (
-      <div className="  min-h-screen bg-gray-50 py-12 px-4">
+      <div className="  min-h-screen bg-gray-50 mt-[10%] py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-8 text-center">
               <CheckCircle className="w-16 h-16 mx-auto mb-4" />
-              <h1 className="text-3xl font-bold">APPOINTMENT CONFIRMATION</h1>
+              <h1 className="text-3xl font-bold">{t('paymentForm.appointmentConfirmation')}</h1>
             </div>
 
             <div className="p-8">
               {service && (
                 <div className="mb-6 p-4 bg-teal-50 rounded-lg border border-teal-200">
-                  <p className="text-sm text-teal-700 font-semibold">Service:</p>
-                  <p className="text-xl font-bold text-teal-900">{service.name || 'Service'}</p>
-                  {service.price && <p className="text-teal-700 mt-1">Price: ${service.price}</p>}
-                </div>
+                  <p className="text-sm text-teal-700 font-semibold">{t('paymentForm.service')}:</p>
+                  <p className="text-xl font-bold text-teal-900">{service.title || t('paymentForm.service')}</p>
+                   <p className="text-teal-700 mt-1">{t('paymentForm.price')}:AED {service.price  && service.price}</p>
+
+                 </div>
               )}
               
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
                   <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                     <User className="w-5 h-5 text-teal-600" />
-                    Contact Info
+                    {t('paymentForm.contactInfo')}
                   </h2>
                   
                   <div className="space-y-3">
                     <InfoItem 
-                      label="Name" 
+                      label={t('paymentForm.name')} 
                       value={`${formData.firstName} ${formData.lastName}`}
                     />
                     <InfoItem 
-                      label="Email" 
+                      label={t('paymentForm.email')} 
                       value={formData.email}
                     />
                     <InfoItem 
-                      label="Phone" 
+                      label={t('paymentForm.phone')} 
                       value={formData.phone}
                     />
                     <InfoItem 
-                      label="Address" 
+                      label={t('paymentForm.address')} 
                       value={formData.address}
                     />
                     <InfoItem 
-                      label="City" 
+                      label={t('paymentForm.city')} 
                       value={formData.city}
                     />
                     <InfoItem 
-                      label="Zip Code" 
+                      label={t('paymentForm.zipCode')} 
                       value={formData.zip}
                     />
                   </div>
@@ -331,12 +371,12 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                 <div>
                   <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-teal-600" />
-                    Appointment Details
+                    {t('paymentForm.appointmentDetails')}
                   </h2>
                   
                   <div className="space-y-3">
                     <InfoItem 
-                      label="Date" 
+                      label={t('paymentForm.date')} 
                       value={selectedDate?.toLocaleDateString('en-US', { 
                         weekday: 'long', 
                         year: 'numeric', 
@@ -345,24 +385,24 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                       })}
                     />
                     <InfoItem 
-                      label="Time" 
+                      label={t('paymentForm.time')} 
                       value={selectedTime}
                     />
                     <InfoItem 
-                      label="Duration" 
-                      value={`${formData.duration} Minutes`}
+                      label={t('paymentForm.duration')} 
+                      value={formatDuration(formData.duration)}
                     />
                     <InfoItem 
-                      label="Timezone" 
+                      label={t('paymentForm.timezone')} 
                       value={formData.timezone}
                     />
                     <InfoItem 
-                      label="Location" 
+                      label={t('paymentForm.location')} 
                       value={`${formData.address}, ${formData.zip} ${formData.city}`}
                     />
                     {formData.notes && (
                       <InfoItem 
-                        label="Notes" 
+                        label={t('paymentForm.notes')} 
                         value={formData.notes}
                       />
                     )}
@@ -376,19 +416,19 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                   className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition flex items-center justify-center gap-2"
                 >
                   <ArrowLeft className="w-5 h-5" />
-                  BACK
+                  {t('common.back').toUpperCase()}
                 </button>
                 <button
                   onClick={handleConfirm}
                   className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition flex items-center justify-center gap-2"
                 >
                   <CheckCircle className="w-5 h-5" />
-                  CONFIRM
+                  {t('paymentForm.confirmToPay')}
                 </button>
               </div>
 
               <p className="text-center text-sm text-gray-500 mt-4">
-                Your transaction is fully secure and protected 🔒
+                {t('paymentForm.secureTransaction')}
               </p>
             </div>
           </div>
@@ -398,15 +438,16 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
   }
 
   return (
-    <div className=" min-h-screen bg-gray-50 py-12 px-4">
+    <div className=" min-h-screen bg-gray-50 mt-[10%] py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {service && (
             <div className="mb-6 p-4 bg-teal-50 rounded-lg border-l-4 border-teal-600">
-              <p className="text-sm text-teal-800 font-semibold">Selected Service:</p>
-              <p className="text-lg font-bold text-teal-900">{service.name || 'Service'}</p>
-              {service.price && <p className="text-teal-700">Price: ${service.price}</p>}
-            </div>
+              <p className="text-sm text-teal-800 font-semibold">{t('paymentForm.selectedService')}</p>
+              <p className="text-lg font-bold text-teal-900">{service.title || t('paymentForm.service')}</p>
+              <p className="text-teal-700 mt-1">{t('paymentForm.price')}:AED {service.price  && service.price}</p>
+
+             </div>
           )}
           
            <div className="mb-8">
@@ -417,7 +458,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                 }`}>
                   1
                 </div>
-                <span className="font-semibold hidden sm:inline">Date & Time</span>
+                <span className="font-semibold hidden sm:inline">{t('paymentForm.selectDate')} & {t('paymentForm.selectTime')}</span>
               </div>
               
               <div className="w-20 h-1 bg-gray-200">
@@ -430,7 +471,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                 }`}>
                   2
                 </div>
-                <span className="font-semibold hidden sm:inline">Your Details</span>
+                <span className="font-semibold hidden sm:inline">{t('paymentForm.yourDetails')}</span>
               </div>
             </div>
           </div>
@@ -439,16 +480,16 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
           {currentStep === 1 && (
             <div className="space-y-6">
               <h1 className="text-3xl font-bold text-gray-900 text-center mb-2">
-                Select Date & Time
+                {t('paymentForm.selectDate')} & {t('paymentForm.selectTime')}
               </h1>
               <p className="text-gray-600 text-center mb-8">
-                Choose your preferred appointment slot
+                {t('paymentForm.selectDate')} & {t('paymentForm.selectTime')}
               </p>
 
               <div className="bg-[#eff0f2] rounded-xl p-6 shadow">
                 <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-[#0d9488]" />
-                  Appointment Date & Time
+                  {t('paymentForm.appointmentDetails')}
                 </h3>
                 
                 <div className="grid lg:grid-cols-2 gap-6">
@@ -493,7 +534,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                   <div>
                     <div className="mb-4">
                       <label className="block font-semibold mb-3 text-gray-700">
-                        Timezone <span className="text-red-500">*</span>
+                        {t('paymentForm.timezone')} <span className="text-red-500">*</span>
                       </label>
                       <select
                         name="timezone"
@@ -509,7 +550,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
 
                     <div>
                       <label className="block font-semibold mb-3 text-gray-700">
-                        Select Time <span className="text-red-500">*</span>
+                        {t('paymentForm.selectTime')} <span className="text-red-500">*</span>
                       </label>
                       <div className="max-h-80 overflow-y-auto space-y-2 border border-gray-200 rounded-lg p-3 bg-white">
                         {timeSlots.map(time => (
@@ -534,7 +575,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
 
                 <div className="mt-4">
                   <label className="block font-semibold mb-2 text-gray-700">
-                    Duration <span className="text-red-500">*</span>
+                    {t('paymentForm.duration')} <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="duration"
@@ -542,11 +583,11 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                     onChange={handleChange}
                     value={formData.duration}
                   >
-                    <option value="30">30 Minutes</option>
-                    <option value="45">45 Minutes</option>
-                    <option value="60">1 Hour</option>
-                    <option value="90">1.5 Hours</option>
-                    <option value="120">2 Hours</option>
+                    <option value="30">30 {t('paymentForm.minutes')}</option>
+                    <option value="45">45 {t('paymentForm.minutes')}</option>
+                    <option value="60">1 {t('paymentForm.hour')}</option>
+                    <option value="90">1.5 {t('paymentForm.hours')}</option>
+                    <option value="120">2 {t('paymentForm.hours')}</option>
                   </select>
                 </div>
               </div>
@@ -556,7 +597,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                 onClick={handleNext}
                 className="w-full py-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl font-bold text-lg hover:from-teal-700 hover:to-teal-800 transition shadow-lg flex items-center justify-center gap-2"
               >
-                Next: Your Details
+                {t('common.next')}: {t('paymentForm.yourDetails')}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
@@ -566,24 +607,24 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
           {currentStep === 2 && (
             <div className="space-y-6">
               <h1 className="text-3xl font-bold text-gray-900 text-center mb-2">
-                Your Information
+                {t('paymentForm.yourDetails')}
               </h1>
               <p className="text-gray-600 text-center mb-8">
-                Please provide your contact details
+                {t('paymentForm.yourDetails')}
               </p>
 
               {/* Personal Information */}
               <div className="bg-[#eff0f2] rounded-xl p-6 shadow">
                 <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                   <User className="w-5 h-5 text-blue-600" />
-                  Personal Information
+                  {t('paymentForm.contactInfo')}
                 </h3>
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   <FormField
-                    label="First Name"
+                    label={t('paymentForm.firstName')}
                     name="firstName"
-                    placeholder="Ahmed"
+                    placeholder={t('paymentForm.firstName')}
                     value={formData.firstName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -591,9 +632,9 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                     required
                   />
                   <FormField
-                    label="Last Name"
+                    label={t('paymentForm.lastName')}
                     name="lastName"
-                    placeholder="Khaled"
+                    placeholder={t('paymentForm.lastName')}
                     value={formData.lastName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -604,10 +645,10 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
 
                 <div className="grid md:grid-cols-2 gap-4 mt-4">
                   <FormField
-                    label="Email"
+                    label={t('paymentForm.email')}
                     name="email"
                     type="email"
-                    placeholder="ahmed@example.com"
+                    placeholder={t('paymentForm.email')}
                     value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -615,9 +656,9 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                     required
                   />
                   <FormField
-                    label="Phone Number"
+                    label={t('paymentForm.phoneNumber')}
                     name="phone"
-                    placeholder="+1234567890"
+                    placeholder={t('paymentForm.phone')}
                     value={formData.phone}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -631,13 +672,13 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
               <div className="bg-[#eff0f2] rounded-xl p-6 shadow">
                 <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                   <Home className="w-5 h-5 text-green-600" />
-                  Address Details
+                  {t('paymentForm.addressDetails')}
                 </h3>
                 
                 <FormField
-                  label="Address"
+                  label={t('paymentForm.address')}
                   name="address"
-                  placeholder="Test Street 1A"
+                  placeholder={t('paymentForm.addressDetails')}
                   value={formData.address}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -647,9 +688,9 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
 
                 <div className="grid md:grid-cols-2 gap-4 mt-4">
                   <FormField
-                    label="City"
+                    label={t('paymentForm.city')}
                     name="city"
-                    placeholder="Some Place"
+                    placeholder={t('paymentForm.city')}
                     value={formData.city}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -657,9 +698,9 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                      
                   />
                   <FormField
-                    label="Zip Code"
+                    label={t('paymentForm.zipCode')}
                     name="zip"
-                    placeholder="12345"
+                    placeholder="00000"
                     value={formData.zip}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -673,13 +714,13 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
               <div className="bg-[#eff0f2] rounded-xl p-6 shadow">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-orange-600" />
-                  Additional Notes (Optional)
+                  {t('paymentForm.notes')} ({t('common.cancel')})
                 </h3>
                 
                 <textarea
                   name="notes"
                   rows="4"
-                  placeholder="Any special requests or notes..."
+                  placeholder={t('paymentForm.notes')}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                   onChange={handleChange}
                   value={formData.notes}
@@ -693,13 +734,13 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
                   className="flex-1 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 transition flex items-center justify-center gap-2"
                 >
                   <ArrowLeft className="w-5 h-5" />
-                  Back
+                  {t('common.back')}
                 </button>
                 <button
                   onClick={handleSubmit}
                   className="flex-1 py-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl font-bold text-lg hover:from-teal-700 hover:to-teal-800 transition shadow-lg flex items-center justify-center gap-2"
                 >
-                  Review & Confirm
+                  {t('common.confirm')}
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </div>

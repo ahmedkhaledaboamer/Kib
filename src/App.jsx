@@ -5,11 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Layout from "./Layout/layout";
 import ChatwootProvider from "./utils/ChatwootProvider";
+import LanguageDetector from "./components/LanguageDetector";
 
 function App() {
   return (
     <BrowserRouter>
     <ChatwootProvider />
+    <LanguageDetector />
       {/* Toastify */}
       <ToastContainer
         position="top-right"

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function PaymentSuccess() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,18 +37,18 @@ function PaymentSuccess() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-10 rounded-2xl shadow-lg text-center max-w-md">
         <h1 className="text-3xl font-bold text-green-600 mb-4">
-          Payment Successful  
+          {t('paymentSuccess.title')}
         </h1>
 
         <p className="text-gray-600 mb-8">
-          Your payment has been completed successfully.
+          {t('paymentSuccess.message')}
         </p>
 
         <button
           onClick={handleBackToServices}
           className="px-8 py-3 bg-[#2f6fb2] text-white rounded-full font-bold hover:bg-blue-700"
         >
-          Back to Services
+          {t('paymentSuccess.backToServices')}
         </button>
       </div>
     </div>

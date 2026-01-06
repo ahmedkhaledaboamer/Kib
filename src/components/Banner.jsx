@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Banner({ title, breadcrumbs, backgroundImage }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
-    <div className="relative h-96 w-full overflow-hidden">
+    <div className="relative pt-[10%] h-[900px] w-full overflow-hidden">
        <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
@@ -17,7 +19,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
 
       <div className="relative h-full flex flex-col items-center justify-center text-white px-4">
         <h1 className="text-5xl md:text-6xl font-bold mb-4">
-          {title || "Our Categories"}
+          {title || t('banner.ourCategories')}
         </h1>
 
         <div className="flex items-center gap-2 text-lg">
@@ -25,13 +27,13 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
             onClick={() => navigate(-1)}
             className="hover:text-yellow-400 transition-colors cursor-pointer"
           >
-            {breadcrumbs?.home || "Home"}
+            {breadcrumbs?.home || t('common.home')}
           </span>
 
           <span className="text-yellow-400">≫</span>
 
           <span className="text-yellow-400">
-            {breadcrumbs?.current || "Sub Services "}
+            {breadcrumbs?.current || t('banner.subServices')}
           </span>
         </div>
       </div>

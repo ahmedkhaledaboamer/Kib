@@ -1,0 +1,108 @@
+{
+  "navbar": {
+    "home": "Startseite",
+    "benefits": "Vorteile",
+    "services": "Dienstleistungen",
+    "whyUs": "Warum wir",
+    "dubai": "Dubai",
+    "map": "Standort"
+  },
+  "common": {
+    "home": "Startseite",
+    "back": "Zurück",
+    "next": "Weiter",
+    "close": "Schließen",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "book": "Buchen",
+    "booking": "Buchung",
+    "bookNow": "Jetzt buchen",
+    "readMore": "Mehr lesen",
+    "chat": "Chat",
+    "categories": "Kategorien",
+    "noData": "Keine Daten verfügbar"
+  },
+  "services": {
+    "title": "Unsere Dienstleistungen",
+    "ourServices": "Unsere Dienstleistungen",
+    "loadingServices": "Dienstleistungen werden geladen...",
+    "subServices": "Unterdienste",
+    "noCategories": "Keine Kategorien verfügbar"
+  },
+  "banner": {
+    "ourCategories": "Unsere Kategorien",
+    "subServices": "Unterdienste"
+  },
+  "paymentForm": {
+    "appointmentConfirmation": "TERMINBESTÄTIGUNG",
+    "selectedService": "Ausgewählter Service:",
+    "service": "Service",
+    "price": "Preis",
+    "contactInfo": "Kontaktinformationen",
+    "appointmentDetails": "Termindetails",
+    "name": "Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "address": "Adresse",
+    "city": "Stadt",
+    "zipCode": "Postleitzahl",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "duration": "Dauer",
+    "timezone": "Zeitzone",
+    "location": "Standort",
+    "notes": "Notizen",
+    "confirmToPay": "Zum Bezahlen bestätigen",
+    "secureTransaction": "Ihre Transaktion ist vollständig sicher und geschützt 🔒",
+    "selectDate": "Datum auswählen",
+    "selectTime": "Uhrzeit auswählen",
+    "yourDetails": "Ihre Details",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "phoneNumber": "Telefonnummer",
+    "addressDetails": "Adressdetails",
+    "pleaseSelectDate": "Bitte wählen Sie ein Datum",
+    "pleaseSelectTime": "Bitte wählen Sie eine Uhrzeit",
+    "firstNameRequired": "Vorname ist erforderlich",
+    "lastNameRequired": "Nachname ist erforderlich",
+    "emailRequired": "E-Mail ist erforderlich",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "phoneRequired": "Telefonnummer ist erforderlich",
+    "phoneInvalid": "Telefon muss 10-15 Ziffern haben",
+    "mustBe2Chars": "Muss mindestens 2 Zeichen lang sein",
+    "minutes": "Minuten",
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "errorSaving": "Fehler beim Speichern der Daten. Bitte versuchen Sie es erneut.",
+    "january": "Januar",
+    "february": "Februar",
+    "march": "März",
+    "april": "April",
+    "may": "Mai",
+    "june": "Juni",
+    "july": "Juli",
+    "august": "August",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "Dezember"
+  },
+  "paymentSuccess": {
+    "title": "Zahlung erfolgreich",
+    "message": "Ihre Zahlung wurde erfolgreich abgeschlossen.",
+    "backToServices": "Zurück zu den Dienstleistungen"
+  },
+  "categories": {
+    "title": "Kategorien",
+    "back": "Zurück"
+  },
+  "modal": {
+    "publicRelation": "Öffentlichkeitsarbeit",
+    "publicRelationDesc": "Verwaltung des Unternehmensrufs, Investor-Kommunikation, Medienbeziehungen, Unternehmensveranstaltungen und strategische PR-Initiativen, die Vertrauen und ein starkes öffentliches Image aufbauen."
+  }
+}
+
