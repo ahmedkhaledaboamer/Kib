@@ -11,7 +11,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
        <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: backgroundImage || `url('/images/ahmed.jpg')`,
+          backgroundImage: backgroundImage || `url('https://shazmlc.com/book-service/images/ahmed.jpg')`,
         }}
       >
         <div className="absolute inset-0 bg-black/50"></div>

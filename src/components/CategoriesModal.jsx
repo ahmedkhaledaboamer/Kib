@@ -32,12 +32,12 @@ function CategoriesModal({ isOpen, onClose, service }) {
         {/* Header */}
         <div className="flex-shrink-0 p-6 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-3xl font-bold text-gray-900">
-            {service?.title} - {t('common.categories')}
+            {service?.title} 
           </h2>
           <div className="flex gap-2">
             <button
               onClick={() => setIsChatOpen(true)}
-              className="p-3 bg-[#2f6fb2] text-white rounded-full font-medium hover:bg-blue-50 hover:text-[#2f6fb2] transition"
+              className="p-3 bg-[#0d8d82] text-white rounded-full font-medium hover:bg-[#096d63]  hover:text-[#fff] transition"
             >
               <MessageCircle />
             </button>
@@ -45,7 +45,7 @@ function CategoriesModal({ isOpen, onClose, service }) {
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
-              <X className="w-6 h-6 text-[#2f6fb2]" />
+              <X className="w-6 h-6 text-[#0d8d82]" />
             </button>
           </div>
         </div>

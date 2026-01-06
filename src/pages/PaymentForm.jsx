@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, MapPin, User, Mail, Phone, Home, Globe, FileText, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +28,7 @@ function AppointmentForm() {
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-
+ 
   const timeSlots = [
     '7:00 AM', '7:15 AM', '7:30 AM', '7:45 AM',
     '8:00 AM', '8:15 AM', '8:30 AM', '8:45 AM',
@@ -55,10 +53,7 @@ function AppointmentForm() {
 
   const durationOptions = {
     30: `30 ${t('paymentForm.minutes')}`,
-    45: `45 ${t('paymentForm.minutes')}`,
-    60: `1 ${t('paymentForm.hour')}`,
-    90: `1.5 ${t('paymentForm.hours')}`,
-    120: `2 ${t('paymentForm.hours')}`
+    
   };
 
 
@@ -242,7 +237,7 @@ serviceId: serviceId < 6 ? 6 : serviceId,    };
       console.log('Service Info:', service);
       console.log('Data saved to localStorage:', bookingData);
       
-      window.open("https://buy.stripe.com/test_bJe3cuayXgRk3jFd96eIw01", "_blank");
+      window.open("https://buy.stripe.com/28EfZj0pGby98OS1MJ7kc04", "_blank");
     } catch (error) {
       console.error('Error saving to localStorage:', error);
       alert(t('paymentForm.errorSaving'));
@@ -315,9 +310,19 @@ const renderCalendar = () => {
   // Confirmation Page
   if (isConfirming) {
     return (
-      <div className="  min-h-screen bg-gray-50 mt-[10%] py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div className="  min-h-screen bg-gray-50 flex items-end justify-center   py-12 px-4  ">
+<div className="
+  w-full
+  mx-auto
+  px-4
+  sm:px-6
+  lg:px-8
+  max-w-sm
+  sm:max-w-md
+  md:max-w-2xl
+  lg:max-w-4xl
+  xl:max-w-6xl
+">          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-8 text-center">
               <CheckCircle className="w-16 h-16 mx-auto mb-4" />
               <h1 className="text-3xl font-bold">{t('paymentForm.appointmentConfirmation')}</h1>
@@ -438,8 +443,20 @@ const renderCalendar = () => {
   }
 
   return (
-    <div className=" min-h-screen bg-gray-50 mt-[10%] py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className=" min-h-screen bg-gray-50   flex items-end justify-center py-12 px-4   ">
+      <div className="
+  w-full
+  mx-auto
+  px-4
+  sm:px-6
+  lg:px-8
+  max-w-sm
+  sm:max-w-md
+  md:max-w-2xl
+  lg:max-w-4xl
+  xl:max-w-6xl
+  
+">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {service && (
             <div className="mb-6 p-4 bg-teal-50 rounded-lg border-l-4 border-teal-600">
@@ -538,7 +555,7 @@ const renderCalendar = () => {
                       </label>
                       <select
                         name="timezone"
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700"
                         onChange={handleChange}
                         value={formData.timezone}
                       >
@@ -579,15 +596,12 @@ const renderCalendar = () => {
                   </label>
                   <select
                     name="duration"
-                    className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0d8d82] focus:border-[#0d8d82]"
                     onChange={handleChange}
                     value={formData.duration}
                   >
                     <option value="30">30 {t('paymentForm.minutes')}</option>
-                    <option value="45">45 {t('paymentForm.minutes')}</option>
-                    <option value="60">1 {t('paymentForm.hour')}</option>
-                    <option value="90">1.5 {t('paymentForm.hours')}</option>
-                    <option value="120">2 {t('paymentForm.hours')}</option>
+                     
                   </select>
                 </div>
               </div>
@@ -721,7 +735,7 @@ const renderCalendar = () => {
                   name="notes"
                   rows="4"
                   placeholder={t('paymentForm.notes')}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-3 border-2 focus:outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0d8d82] focus:border-[#0d8d82]"
                   onChange={handleChange}
                   value={formData.notes}
                 />
@@ -762,7 +776,7 @@ function FormField({ label, name, type = 'text', placeholder, value, onChange, o
         name={name}
         type={type}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${
+        className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:ring-2 focus:ring-[#0d8d82] focus:border-[#0d8d82] transition focus:outline-none ${
           error ? 'border-red-500' : 'border-gray-300'
         }`}
         onChange={onChange}

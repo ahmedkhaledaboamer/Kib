@@ -29,11 +29,11 @@ const Button = () => {
   return (
     <div
       className={`
-        fixed bottom-5 w-11 h-11 bg-[#2f6fb2] text-white rounded 
+        fixed bottom-5 w-11 h-11 bg-[#0d8d82] text-white rounded 
         cursor-pointer transition-all duration-500 ease-in-out
         flex items-center justify-center z-[99999]
-        ${isVisible ? 'opacity-100 right-5 pointer-events-auto' : 'opacity-0 right-0 pointer-events-none'}
-        hover:bg-[#2f6fb2] active:scale-95
+        ${isVisible ? 'opacity-100 left-5 pointer-events-auto' : 'opacity-0 left-0 pointer-events-none'}
+        hover:bg-[#0d8d82] active:scale-95
       `}
       onClick={scrollToTop}
     >
