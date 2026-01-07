@@ -60,7 +60,7 @@ function CategoriesModal({ isOpen, onClose, service }) {
                   link="/book"
                   btn={t('common.bookNow')}
                   service={subservice}
-                  disableModal={true} // مهم لتجنب فتح modal داخل modal
+                  disableModal={true} 
                 />
               ))}
             </div>

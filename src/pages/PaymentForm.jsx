@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, MapPin, User, Mail, Phone, Home, Globe, FileText, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,7 @@ function AppointmentForm() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
+  const [viewportScale, setViewportScale] = useState(1);
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -28,6 +29,18 @@ function AppointmentForm() {
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+
+  // Keep the whole form visible by scaling down on shorter viewports
+  useEffect(() => {
+    const updateScale = () => {
+      const targetHeight = 950; // approximate design height
+      const nextScale = Math.min(1, Math.max(0.6, window.innerHeight / targetHeight));
+      setViewportScale(nextScale);
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
  
   const timeSlots = [
     '7:00 AM', '7:15 AM', '7:30 AM', '7:45 AM',
@@ -310,7 +323,7 @@ const renderCalendar = () => {
   // Confirmation Page
   if (isConfirming) {
     return (
-      <div className="  min-h-screen bg-gray-50 flex items-end justify-center   py-12 px-4  ">
+      <div className="  min-h-screen bg-gray-50 flex items-end justify-center   py-12 px-4  overflow-hidden">
 <div className="
   w-full
   mx-auto
@@ -322,7 +335,7 @@ const renderCalendar = () => {
   md:max-w-2xl
   lg:max-w-4xl
   xl:max-w-6xl
-">          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+" style={{ transform: `scale(${viewportScale})`, transformOrigin: 'top center' }}>          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-8 text-center">
               <CheckCircle className="w-16 h-16 mx-auto mb-4" />
               <h1 className="text-3xl font-bold">{t('paymentForm.appointmentConfirmation')}</h1>
@@ -445,7 +458,7 @@ const renderCalendar = () => {
   return (
     <>
     
-            <div className=" min-h-screen bg-gray-50   flex items-end justify-center py-12 px-4   ">
+            <div className=" min-h-screen bg-gray-50   flex items-end justify-center py-12 px-4   overflow-hidden">
       
       <div className="
   w-full
@@ -459,7 +472,7 @@ const renderCalendar = () => {
   lg:max-w-4xl
   xl:max-w-6xl
   
-">
+" style={{ transform: `scale(${viewportScale})`, transformOrigin: 'top center' }}>
    {/* <button
               onClick={handleBack}
               className="mb-6 flex items-center gap-2 text-gray-600 hover:text-teal-600 font-medium transition-colors"

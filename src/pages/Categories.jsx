@@ -24,15 +24,7 @@ function Categories() {
 
   return (
     <div>
-      {/* <Banner 
-        title={selectedService?.title || t('categories.title')}
-        breadcrumbs={{
-          home: selectedService?.title,
-          services: t('navbar.services'),
-          current: t('categories.title')
-        }}
-        backgroundImage={`url(${selectedService?.image})`}
-      /> */}
+       
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-4 py-12">
         <div className="mb-6">

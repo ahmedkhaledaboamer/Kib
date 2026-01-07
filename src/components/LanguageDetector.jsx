@@ -30,8 +30,7 @@ const LanguageDetector = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // استخراج اللغة من المسار
-    const pathSegments = location.pathname.split('/').filter(Boolean);
+     const pathSegments = location.pathname.split('/').filter(Boolean);
     const currentLang = lang || (pathSegments.length > 0 ? pathSegments[0] : 'en');
     
     const supportedLanguages = ['en', 'ar', 'fr', 'du'];

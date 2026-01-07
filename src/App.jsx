@@ -14,7 +14,7 @@ function App() {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }, []);
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/book-service/">
     <ChatwootProvider />
     <LanguageDetector />
       {/* Toastify */}

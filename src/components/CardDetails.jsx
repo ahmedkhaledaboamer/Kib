@@ -19,11 +19,11 @@ function CardDetails({ link, btn, service, disableModal = false }) {
       {/* Image */}
       <div className="w-full max-w-2xl overflow-hidden relative rounded-xl h-80">
         <img
-          src={service.image || '/images/ahmed.jpg'}
+          src={service.image || 'https://shazmlc.com/book-service/images/ahmed.jpg'}
           alt={service.title || 'Service'}
           className="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-          onError={(e) => { e.target.src = '/images/ahmed.jpg'; }}
-        />
+          onError={(e) => { e.target.src = 'https://shazmlc.com/book-service/images/ahmed.jpg'; }}
+        /> 
 
         {/* Open Categories Button */}
         {!disableModal && service.subservices?.length > 0 && (
