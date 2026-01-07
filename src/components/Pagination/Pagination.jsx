@@ -156,8 +156,8 @@ function Pagination({ totalPages = 5, onPageChange }) {
           disabled={currentPage === totalPages}
           className={`${buttonSizeClass} rounded-lg flex items-center justify-center font-semibold transition-all ${
             currentPage === totalPages
-              ? 'bg-[#0d8d82] text-white/50 cursor-not-allowed'
-              : 'bg-[#0d8d82] text-white hover:bg-[#3ec9bb] active:scale-95'
+              ? 'bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white/50 cursor-not-allowed'
+              : 'bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white hover:bg-[#3ec9bb] active:scale-95'
           }`}
           aria-label="Next page"
         >
@@ -178,14 +178,14 @@ function Pagination({ totalPages = 5, onPageChange }) {
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-[#0d8d82] text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white rounded-lg disabled:opacity-50"
         >
           Previous
         </button>
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-[#0d8d82] text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white rounded-lg disabled:opacity-50"
         >
           Next
         </button>

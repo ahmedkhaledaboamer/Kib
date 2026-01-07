@@ -141,6 +141,7 @@ import Banner from "../components/Banner";
 import CardDetails from "../components/CardDetails";
 import { useTranslation } from 'react-i18next';
 import Pagination from '../components/Pagination/Pagination';
+import CardDetailsSkeleton from '../components/CardDetailsSkeleton';
 
 const Services = () => {
   const { t } = useTranslation();
@@ -211,6 +212,7 @@ const Services = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentServices = filteredServices.slice(startIndex, endIndex);
+  const isLoading = !Array.isArray(services) || services.length === 0;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -242,64 +244,88 @@ const Services = () => {
         {Array.isArray(services) && services.length > 0 ? (
           <>
             {/* Search Input */}
-            <div className="mb-8 max-w-2xl mx-auto">
-              <div className='flex items-center justify-center gap-4 '>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder={t('services.searchPlaceholder')+"..." || "Search services by title..."}
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  className="w-full px-4 py-3 pl-12 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0d8d82] focus:border-transparent shadow-sm"
-                />
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </div>
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm('')}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                  </button>
-                )}
-              </div>
-              <button className="  px-6 py-3 bg-[#0d8d82] text-white rounded-lg font-medium hover:bg-[#096d63] transition" onClick={handleSearchSubmit}>
-              {t('services.searchPlaceholder')}
-            </button>
-              </div>
-             
-              
-              {/* Search results count */}
-              {searchTerm && (
-                <div className="mt-2 text-center text-sm text-gray-600">
-                  {filteredServices.length === 0 ? (
-                    <span>{t('services.noResults') || "No services found matching your search."}</span>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              )}
-            </div>
+            <div className="mb-10 max-w-3xl mx-auto">
+  <form
+    onSubmit={handleSearchSubmit}
+    className="relative flex items-center gap-3 bg-white p-2 rounded-2xl shadow-lg border border-gray-200"
+  >
+    {/* Search Icon */}
+    <div className="absolute left-5 text-gray-400">
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg>
+    </div>
+
+    {/* Input */}
+    <input
+      type="text"
+      placeholder={`${t('services.searchPlaceholder')}...`}
+      value={searchTerm}
+      onChange={handleSearchChange}
+      className="flex-1 pl-12 pr-10 py-4 text-gray-900 placeholder-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0d8d82]"
+    />
+
+    {/* Clear */}
+    {searchTerm && (
+      <button
+        type="button"
+        onClick={() => setSearchTerm('')}
+        className="absolute right-[110px] text-gray-400 hover:text-gray-600 transition"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    )}
+
+    {/* Button */}
+    <button
+      type="submit"
+      className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white font-semibold shadow-md hover:shadow-lg hover:scale-[1.03] transition-all"
+    >
+      {t('services.searchPlaceholder')}
+    </button>
+  </form>
+
+  {/* Result Message */}
+  {searchTerm && (
+    <div className="mt-3 text-center text-sm text-gray-500">
+      {filteredServices.length === 0
+        ? t('services.noResults') || 'No services found'
+        : ' '}
+    </div>
+  )}
+</div>
+
 
             {/* Services Grid */}
             {filteredServices.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
-                  {currentServices.map((service) => (
-                    <CardDetails 
-                      key={service.id} 
-                      btn={t('common.booking')} 
-                      id={service.id}  
-                      link={`/${lang}/book`} 
-                      service={service}
-                    />
-                  ))}
-                </div>
+  {isLoading
+    ? Array.from({ length: itemsPerPage }).map((_, i) => (
+        <CardDetailsSkeleton key={i} />
+      ))
+    : currentServices.map((service) => (
+        <CardDetails 
+          key={service.id} 
+          btn={t('common.booking')} 
+          link={`/${lang}/book`} 
+          service={service}
+        />
+      ))
+  }
+</div>
 
                 {/* Pagination */}
                 {filteredServices.length > itemsPerPage && (
