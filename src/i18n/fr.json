@@ -31,7 +31,10 @@
     "ourServices": "Nos Services",
     "loadingServices": "Chargement des services...",
     "subServices": "Sous-services",
-    "noCategories": "Aucune catégorie disponible"
+    "noCategories": "Aucune catégorie disponible",
+    "noResults": "Aucun résultat",
+"searchPlaceholder": "Rechercher"
+
   },
   "banner": {
     "ourCategories": "Nos Catégories",

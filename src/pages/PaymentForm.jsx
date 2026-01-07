@@ -443,7 +443,10 @@ const renderCalendar = () => {
   }
 
   return (
-    <div className=" min-h-screen bg-gray-50   flex items-end justify-center py-12 px-4   ">
+    <>
+    
+            <div className=" min-h-screen bg-gray-50   flex items-end justify-center py-12 px-4   ">
+      
       <div className="
   w-full
   mx-auto
@@ -457,6 +460,13 @@ const renderCalendar = () => {
   xl:max-w-6xl
   
 ">
+   {/* <button
+              onClick={handleBack}
+              className="mb-6 flex items-center gap-2 text-gray-600 hover:text-teal-600 font-medium transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              {t('common.back')}
+            </button> */}
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {service && (
             <div className="mb-6 p-4 bg-teal-50 rounded-lg border-l-4 border-teal-600">
@@ -763,6 +773,8 @@ const renderCalendar = () => {
         </div>
       </div>
     </div>
+    </>
+   
   );
 }
 

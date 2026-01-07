@@ -31,7 +31,9 @@
     "ourServices": "خدماتنا",
     "loadingServices": "جاري تحميل الخدمات...",
     "subServices": "الخدمات الفرعية",
-    "noCategories": "لا توجد فئات متاحة"
+    "noCategories": "لا توجد فئات متاحة",
+    "noResults":"لا يوجد نتائج",
+    "searchPlaceholder":"بحث"
   },
   "banner": {
     "ourCategories": "فئاتنا",

@@ -31,7 +31,10 @@
     "ourServices": "Unsere Dienstleistungen",
     "loadingServices": "Dienstleistungen werden geladen...",
     "subServices": "Unterdienste",
-    "noCategories": "Keine Kategorien verfügbar"
+    "noCategories": "Keine Kategorien verfügbar",
+    "noResults": "Keine Ergebnisse",
+"searchPlaceholder": "Suchen"
+
   },
   "banner": {
     "ourCategories": "Unsere Kategorien",
