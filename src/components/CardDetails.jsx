@@ -124,7 +124,7 @@ function CardDetails({ link, btn, service, disableModal = false }) {
 
       {/* CONTENT */}
       <div className="p-8 space-y-4">
-        <h2 className="text-3xl font-extrabold text-gray-900 leading-tight line-clamp-2">
+        <h2 className="text-3xl font-extrabold text-gray-900 leading-tight line-clamp-2  xl:text-2xl    ">
           {service.title}
         </h2>
 
@@ -165,7 +165,7 @@ function CardDetails({ link, btn, service, disableModal = false }) {
       <ChatWidget
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
-        service={{ ...service, chatToken: 'rpVangi8xrXgUAg7t8puLwtz' }}
+        service={{ ...service, chatToken: 'bwu3GcQDKjsFsqm3irJdcijx' }}
       />
     </div>
   );
