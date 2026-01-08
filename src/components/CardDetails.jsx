@@ -79,6 +79,105 @@
 // export default CardDetails;
 
 
+// import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import { Sparkles, MessageCircle, ArrowRight } from 'lucide-react';
+// import CategoriesModal from './CategoriesModal';
+// import ChatWidget from '../utils/chatwoot';
+// import { useTranslation } from 'react-i18next';
+
+// function CardDetails({ link, btn, service, disableModal = false }) {
+//   const { t } = useTranslation();
+//   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+//   const [isChatOpen, setIsChatOpen] = useState(false);
+
+//   if (!service) return null;
+
+//   return (
+//     <div className="group relative w-full max-w-3xl rounded-[28px] overflow-hidden bg-white shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-500">
+
+//       {/* IMAGE */}
+//       <div className="relative h-[340px] overflow-hidden">
+//         <img
+//           src={service.image || 'https://shazmlc.com/book-service/images/ahmed.jpg'}
+//           alt={service.title}
+//           className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
+//           onError={(e) => {
+//             e.target.src = 'https://shazmlc.com/book-service/images/ahmed.jpg';
+//           }}
+//         />
+
+//         {/* Gradient Overlay */}
+//         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+//         {/* Subservices Badge */}
+//         {!disableModal && service.subservices?.length > 0 && (
+//           <button
+//             onClick={() => setIsCategoriesOpen(true)}
+//             className="absolute top-5 right-5 backdrop-blur-xl bg-white/90 text-gray-900 px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg hover:bg-[#0d8d82] hover:text-white transition"
+//           >
+//             <Sparkles className="inline w-4 h-4 mr-1" />
+//             {service.subservices.length} {t('services.subServices')}
+//           </button>
+//         )}
+//       </div>
+
+//       {/* CONTENT */}
+//       <div className="p-8 space-y-4">
+//         <h2 className="text-3xl font-extrabold text-gray-900 leading-tight line-clamp-2  xl:text-2xl    ">
+//           {service.title}
+//         </h2>
+
+//         <p className="text-gray-600 text-lg leading-relaxed line-clamp-3">
+//           {service.description}
+//         </p>
+
+//         {/* ACTIONS */}
+        
+//         <div className="flex gap-3 w-full">
+//         <button
+//             onClick={() => setIsChatOpen(true)}
+//             className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[#0d8d82] text-[#0d8d82] font-semibold hover:bg-[#0d8d82] hover:text-white transition-all duration-300"
+//           >
+//             <MessageCircle className="w-5 h-5" />
+//             {t('common.chat')}
+//           </button>
+//           <Link to={link} state={{ serviceId: service.id, service }} className="w-full">
+//           <button className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg">
+//               {btn}
+//               <ArrowRight className="w-5 h-5" />
+//             </button>
+//           </Link>
+//         </div>
+        
+//       </div>
+
+//       {/* Categories Modal */}
+//       {!disableModal && service.subservices?.length > 0 && (
+//         <CategoriesModal
+//           isOpen={isCategoriesOpen}
+//           onClose={() => setIsCategoriesOpen(false)}
+//           service={service}
+//         />
+//       )}
+
+//       {/* Chat Widget */}
+//       <ChatWidget
+//         isOpen={isChatOpen}
+//         onClose={() => setIsChatOpen(false)}
+//         service={{ ...service, chatToken: 'bwu3GcQDKjsFsqm3irJdcijx' }}
+//       />
+//     </div>
+//   );
+// }
+
+// export default CardDetails;
+
+
+
+
+
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, MessageCircle, ArrowRight } from 'lucide-react';
@@ -94,14 +193,14 @@ function CardDetails({ link, btn, service, disableModal = false }) {
   if (!service) return null;
 
   return (
-    <div className="group relative w-full max-w-3xl rounded-[28px] overflow-hidden bg-white shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-500">
+    <div className="group relative w-full max-w-3xl h-full rounded-[28px] overflow-hidden bg-white shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-500 flex flex-col">
 
       {/* IMAGE */}
       <div className="relative h-[340px] overflow-hidden">
         <img
           src={service.image || 'https://shazmlc.com/book-service/images/ahmed.jpg'}
           alt={service.title}
-          className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           onError={(e) => {
             e.target.src = 'https://shazmlc.com/book-service/images/ahmed.jpg';
           }}
@@ -123,33 +222,40 @@ function CardDetails({ link, btn, service, disableModal = false }) {
       </div>
 
       {/* CONTENT */}
-      <div className="p-8 space-y-4">
-        <h2 className="text-3xl font-extrabold text-gray-900 leading-tight line-clamp-2  xl:text-2xl    ">
-          {service.title}
-        </h2>
+      <div className="p-8 flex flex-col flex-1">
 
-        <p className="text-gray-600 text-lg leading-relaxed line-clamp-3">
-          {service.description}
-        </p>
+        {/* TEXT */}
+        <div className="space-y-4">
+          <h2 className="text-3xl font-extrabold text-gray-900 leading-tight line-clamp-2 xl:text-2xl">
+            {service.title}
+          </h2>
 
-        {/* ACTIONS */}
-        
-        <div className="flex gap-3 w-full">
-        <button
+          <p className="text-gray-600 text-lg leading-relaxed line-clamp-3">
+            {service.description}
+          </p>
+        </div>
+
+        {/* ACTIONS - ALWAYS BOTTOM */}
+        <div className="flex gap-3 w-full mt-auto pt-6">
+          <button
             onClick={() => setIsChatOpen(true)}
             className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[#0d8d82] text-[#0d8d82] font-semibold hover:bg-[#0d8d82] hover:text-white transition-all duration-300"
           >
             <MessageCircle className="w-5 h-5" />
             {t('common.chat')}
           </button>
-          <Link to={link} state={{ serviceId: service.id, service }} className="w-full">
-          <button className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg">
+
+          <Link
+            to={link}
+            state={{ serviceId: service.id, service }}
+            className="flex-1"
+          >
+            <button className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#0d8d82] to-[#12b3a6] text-white font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg">
               {btn}
               <ArrowRight className="w-5 h-5" />
             </button>
           </Link>
         </div>
-        
       </div>
 
       {/* Categories Modal */}
