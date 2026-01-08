@@ -21,6 +21,14 @@ export default function ChatwootProvider() {
         websiteToken: "bwu3GcQDKjsFsqm3irJdcijx", 
         baseUrl: BASE_URL
       });
+
+       window.openChatwootChat = () => {
+        if (window.$chatwoot) {
+          window.$chatwoot.toggle('open');
+        } else if (window.chatwootSDK) {
+          window.chatwootSDK.toggle();
+        }
+      };
     };
 
     document.body.appendChild(script);

@@ -180,7 +180,7 @@ const Services = () => {
     const params = new URLSearchParams(location.search);
     const sessionId = params.get("session_id");
 
-    if (!sessionId) {
+    if (sessionId) {
       const storedData = localStorage.getItem("user");
       if (storedData) {
         const user = JSON.parse(storedData);

@@ -7,7 +7,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
   const navigate = useNavigate();
 
   return (
-    <div className="relative pt-[10%] h-[900px] w-full overflow-hidden">
+    <div className="relative pt-[10%] h-[50vh] w-full overflow-hidden">
        <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
