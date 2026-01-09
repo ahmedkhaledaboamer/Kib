@@ -1289,9 +1289,7 @@ function AppointmentForm() {
               <h1 className="text-base font-bold text-gray-900 text-center mb-0.5 xs:text-sm xs:mb-0 5xl:text-2xl 5xl:mb-2">
                 {t('paymentForm.selectDate')} & {t('paymentForm.selectTime')}
               </h1>
-              <p className="text-gray-600 text-center mb-3 text-[10px] xs:text-[8px] xs:mb-2 5xl:text-base 5xl:mb-4">
-                {t('paymentForm.selectDate')} & {t('paymentForm.selectTime')}
-              </p>
+              
 
               <div className="bg-gray-50 rounded p-3 border border-gray-200 xs:p-2 5xl:p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 xs:gap-2 5xl:gap-8">
@@ -1407,9 +1405,7 @@ function AppointmentForm() {
               <h1 className="text-base font-bold text-gray-900 text-center mb-0.5 xs:text-sm xs:mb-0 5xl:text-2xl 5xl:mb-2">
                 {t('paymentForm.yourDetails')}
               </h1>
-              <p className="text-gray-600 text-center mb-3 text-[10px] xs:text-[8px] xs:mb-2 5xl:text-base 5xl:mb-4">
-                {t('paymentForm.yourDetails')}
-              </p>
+               
 
               {/* Personal Information */}
               <div className="bg-gray-50 rounded p-3 border border-gray-200 xs:p-2 5xl:p-6">
