@@ -8,11 +8,7 @@ import ChatwootProvider from "./utils/ChatwootProvider";
 import LanguageDetector from "./components/LanguageDetector";
 
 function App() {
-  React.useEffect(() => {
-    const path = window.location.pathname;
-    const lang = path.split('/')[1] || 'en';
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  }, []);
+ 
   return (
     <BrowserRouter basename="/book-service/">
     <ChatwootProvider />

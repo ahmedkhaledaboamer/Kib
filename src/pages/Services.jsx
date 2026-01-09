@@ -142,6 +142,7 @@ import CardDetails from "../components/CardDetails";
 import { useTranslation } from 'react-i18next';
 import Pagination from '../components/Pagination/Pagination';
 import CardDetailsSkeleton from '../components/CardDetailsSkeleton';
+import i18n from '../i18n';
 
 const Services = () => {
   const { t } = useTranslation();
@@ -161,11 +162,10 @@ const Services = () => {
   // Get current language from URL
   const lang = location.pathname.split("/")[1] || "en";
 
-  // Fetch services
+ 
   useEffect(() => {
-    dispatch(getServices());
-  }, [dispatch]);
-
+    dispatch(getServices(lang));
+  }, [dispatch, lang]);
   // Show toast when booking updates
   useEffect(() => {
     if (booking && booking.length > 0) {
@@ -233,14 +233,14 @@ const Services = () => {
     setActiveSearch(searchTerm.trim());
   };
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 ">
       <Banner 
         title={t('services.ourServices')}
         breadcrumbs={{ home: t('common.home'), current: t('services.ourServices') }}
         backgroundImage="url('https://shazmlc.com/book-service/images/ahmed.jpg')"
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-4 py-12">
+      <div className="container mx-auto px-[4%] py-12">
         {Array.isArray(services) && services.length > 0 ? (
           <>
             {/* Search Input */}
@@ -250,7 +250,7 @@ const Services = () => {
     className="relative flex items-center gap-3 bg-white p-2 rounded-2xl shadow-lg border border-gray-200"
   >
     {/* Search Icon */}
-    <div className="absolute left-5 text-gray-400">
+   <div className={`absolute text-gray-400 ${i18n.language === 'ar' ? 'right-5' : 'left-5'}`}>
       <svg
         className="w-5 h-5"
         fill="none"
@@ -280,8 +280,8 @@ const Services = () => {
       <button
         type="button"
         onClick={() => setSearchTerm('')}
-        className="absolute right-[110px] text-gray-400 hover:text-gray-600 transition"
-      >
+         className={`absolute ${i18n.language === 'ar' ? 'left-28' : 'right-32'} text-gray-400 hover:text-gray-600 transition`}
+            >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
         </svg>

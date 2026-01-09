@@ -22,7 +22,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
           {title || t('banner.ourCategories')}
         </h1>
 
-        <div className="flex items-center gap-2 text-lg">
+        {/* <div className="flex items-center gap-2 text-lg">
            <span
             onClick={() => navigate(-1)}
             className="hover:text-yellow-400 transition-colors cursor-pointer"
@@ -35,7 +35,7 @@ function Banner({ title, breadcrumbs, backgroundImage }) {
           <span className="text-yellow-400">
             {breadcrumbs?.current || t('banner.subServices')}
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

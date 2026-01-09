@@ -7,11 +7,29 @@ import { useInsertData } from "../hooks/useInsertData";
 /* =========================
    GET SERVICES
 ========================= */
+// export const getServices = createAsyncThunk(
+//   "services/getServices",
+//   async (_, thunkAPI) => {
+//     try {
+//       const res = await useGetData("service");
+//       return res;
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(
+//         error.response || error.message
+//       );
+//     }
+//   }
+// );
+
+
+
+
+
 export const getServices = createAsyncThunk(
   "services/getServices",
-  async (_, thunkAPI) => {
+  async (lang, thunkAPI) => {
     try {
-      const res = await useGetData("service");
+      const res = await useGetData(`service?lang=${lang}`);
       return res;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -20,7 +38,6 @@ export const getServices = createAsyncThunk(
     }
   }
 );
-
 /* =========================
    POST WEB SERVICES BOOKING
 ========================= */
